@@ -3,7 +3,6 @@ package com.cns.imagedownloader.view.imgDetail
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
@@ -36,7 +35,7 @@ class ImgDetailActivity : AppCompatActivity() {
     var fileName: String = ""
     lateinit var binding: ActivityImgDetailBinding
     val NOTIFICATION_ID = 101
-    var CHANNEL_ID = "imageDownloader"
+    val CHANNEL_ID = "imageDownloader"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +46,7 @@ class ImgDetailActivity : AppCompatActivity() {
         performBinding(imgData)
     }
 
-    fun performBinding(imgData: HitsEntity) {
+    private fun performBinding(imgData: HitsEntity) {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_img_detail)
         binding.imgDetailAct = this
         binding.apply {
@@ -61,6 +60,7 @@ class ImgDetailActivity : AppCompatActivity() {
                         target: Target<Drawable>?,
                         isFirstResource: Boolean
                     ): Boolean {
+                        showFailAlert()
                         progressVisibility = false
                         return true
 
@@ -84,7 +84,7 @@ class ImgDetailActivity : AppCompatActivity() {
         binding.executePendingBindings()
     }
 
-    fun showAlert() {
+    private fun showFailAlert() {
         AlertDialog.Builder(this).apply {
             this.setTitle("이미지 표시 실패")
             this.setMessage("이미지 로딩에 실패하였습니다.")
@@ -102,7 +102,7 @@ class ImgDetailActivity : AppCompatActivity() {
 
     }
 
-    fun saveImg() {
+    private fun saveImg() {
         val values = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, fileName + ".jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
@@ -130,15 +130,27 @@ class ImgDetailActivity : AppCompatActivity() {
     }
 
     // notification bar 에 다운로드 progress 표시
-    fun sendNotification() {
-        createNotification()
+    private fun sendNotification() {
+        createNotificationChannel()
 
         val mainIntent = Intent(this, MainActivity::class.java).apply {
             this.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             this.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        val pendingIntent =
-            PendingIntent.getActivities(this, 0, arrayOf(mainIntent), PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                android.app.PendingIntent.getActivities(
+                    this, 0,
+                    kotlin.arrayOf(mainIntent), android.app.PendingIntent.FLAG_IMMUTABLE
+                )
+            } else {
+                android.app.PendingIntent.getActivities(
+                    this, 0,
+                    kotlin.arrayOf(mainIntent), android.app.PendingIntent.FLAG_ONE_SHOT
+                )
+            }
+        }
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationBuilder = Notification.Builder(this, CHANNEL_ID).apply {
@@ -161,7 +173,7 @@ class ImgDetailActivity : AppCompatActivity() {
 
     }
 
-    fun createNotification() {
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationName = getString(R.string.app_name)
             val description = "이미지 다운로드"

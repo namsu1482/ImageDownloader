@@ -4,6 +4,10 @@ plugins {
     id 'kotlin-kapt'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
 android {
 
     compileSdk 31
@@ -16,6 +20,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField  "String", "GOOGLE_SEARCH_API",properties['google_search_api_key']
+
+
     }
     buildFeatures {
         dataBinding = true
