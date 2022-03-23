@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.ContentValues
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -15,6 +16,7 @@ import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
@@ -31,7 +33,6 @@ import java.io.FileOutputStream
 
 class ImgDetailActivity : AppCompatActivity() {
     private val TAG = ImgDetailActivity::class.java.simpleName
-    val filePath: String = "imageDownloader"
     var fileName: String = ""
     lateinit var binding: ActivityImgDetailBinding
     val NOTIFICATION_ID = 101
@@ -81,6 +82,17 @@ class ImgDetailActivity : AppCompatActivity() {
                 .into(imgFull)
         }
         binding.executePendingBindings()
+    }
+
+    fun showAlert() {
+        AlertDialog.Builder(this).apply {
+            this.setTitle("이미지 표시 실패")
+            this.setMessage("이미지 로딩에 실패하였습니다.")
+            this.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+                onBackPressed()
+            })
+        }
     }
 
     fun onClick() {
