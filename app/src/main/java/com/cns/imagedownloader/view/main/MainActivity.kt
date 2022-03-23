@@ -2,6 +2,7 @@ package com.cns.imagedownloader.view.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun performBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.mainAct = this
         binding.apply {
             mainviewmodel = mainViewModel
             lifecycleOwner = this@MainActivity
@@ -52,6 +54,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    fun onBtnClick() {
+        Toast.makeText(this, "fab click", Toast.LENGTH_SHORT).show()
     }
 
 }

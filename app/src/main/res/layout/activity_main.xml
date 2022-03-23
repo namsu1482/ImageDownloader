@@ -8,6 +8,10 @@
         <variable
             name="mainviewmodel"
             type="com.cns.imagedownloader.view.main.MainViewModel" />
+
+        <variable
+            name="mainAct"
+            type="com.cns.imagedownloader.view.main.MainActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,6 +52,7 @@
             android:layout_marginBottom="16dp"
             android:src="@android:drawable/ic_input_add"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:onClick="@{()->mainAct.onBtnClick()}"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
