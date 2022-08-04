@@ -11,7 +11,6 @@ const val API_KEY = "25605493-c50d0c2814b5c6857e8fb1311"
 
 class RetrofitHelper {
     var networkService: NetworkService
-
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)

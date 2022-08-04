@@ -9,17 +9,18 @@ class MainViewModel : ViewModel() {
     var title: MutableLiveData<String> = MutableLiveData()
     var sampleItemList: MutableLiveData<ArrayList<SampleItem>> = MutableLiveData()
 
-    fun onPostTitle() {
+    private fun onPostTitle() {
         var tempTitle = title.value ?: ""
         title.postValue(tempTitle)
     }
 
     fun onClick() {
-        onPostTitle()
+//        onPostTitle()
         initSampleList()
+
     }
 
-    fun initSampleList() {
+    private fun initSampleList() {
         sampleItemList.value?.clear()
         var sampleList = sampleItemList.value ?: ArrayList()
         val range = (1..100)

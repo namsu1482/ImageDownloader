@@ -14,8 +14,7 @@ class SampleItemAdapter : RecyclerView.Adapter<SampleItemAdapter.ItemViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = LayoutItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val holder = ItemViewHolder(binding)
-        return holder
+        return ItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {

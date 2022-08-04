@@ -11,10 +11,13 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -27,15 +30,17 @@ import com.bumptech.glide.request.target.Target
 import com.cns.imagedownloader.R
 import com.cns.imagedownloader.databinding.ActivityImgDetailBinding
 import com.cns.imagedownloader.model.HitsEntity
+import com.cns.imagedownloader.notification.NotificationHelper
 import com.cns.imagedownloader.view.main.MainActivity
+import java.io.File
 import java.io.FileOutputStream
 
 class ImgDetailActivity : AppCompatActivity() {
     private val TAG = ImgDetailActivity::class.java.simpleName
+    var DIR_NAME: String = "ImageDownloader"
+
     var fileName: String = ""
     lateinit var binding: ActivityImgDetailBinding
-    val NOTIFICATION_ID = 101
-    val CHANNEL_ID = "imageDownloader"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,15 +102,20 @@ class ImgDetailActivity : AppCompatActivity() {
 
     fun onClick() {
         saveImg()
-        sendNotification()
-        Toast.makeText(this, "다운로드", Toast.LENGTH_SHORT).show()
+        NotificationHelper(this).sendNotification()
+        Toast.makeText(this, "이미지 다운로드가 완료되었습니다.", Toast.LENGTH_SHORT).show()
 
     }
 
+
     private fun saveImg() {
         val values = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, fileName + ".jpg")
+            put(
+                MediaStore.Images.Media.DISPLAY_NAME,
+                "${fileName}.jpg"
+            )
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/${DIR_NAME}")
         }
 
         val item = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
@@ -129,65 +139,4 @@ class ImgDetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    // notification bar 에 다운로드 progress 표시
-    private fun sendNotification() {
-        createNotificationChannel()
-
-        val mainIntent = Intent(this, MainActivity::class.java).apply {
-            this.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            this.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        val pendingIntent = let {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                android.app.PendingIntent.getActivities(
-                    this, 0,
-                    kotlin.arrayOf(mainIntent), android.app.PendingIntent.FLAG_IMMUTABLE
-                )
-            } else {
-                android.app.PendingIntent.getActivities(
-                    this, 0,
-                    kotlin.arrayOf(mainIntent), android.app.PendingIntent.FLAG_ONE_SHOT
-                )
-            }
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationBuilder = Notification.Builder(this, CHANNEL_ID).apply {
-                this.setSmallIcon(R.drawable.ic_launcher_foreground)
-                this.setContentTitle(getString(R.string.app_name))
-                this.setContentText("이미지 다운로드")
-                // notification 클릭시 notification 자동 삭제 여부
-                this.setAutoCancel(true)
-                // notification 클릭시 실행할 인텐트 설정
-                this.setContentIntent(pendingIntent)
-
-            }
-
-            NotificationManagerCompat.from(this@ImgDetailActivity).run {
-                this.notify(NOTIFICATION_ID, notificationBuilder.build())
-            }
-        } else {
-            return
-        }
-
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationName = getString(R.string.app_name)
-            val description = "이미지 다운로드"
-            val notificationImportance = NotificationManager.IMPORTANCE_DEFAULT
-            //notification 채널 생성
-            val notificationChannel =
-                NotificationChannel(CHANNEL_ID, notificationName, notificationImportance).apply {
-                    this.description = description
-                }
-
-            // notification Manager에 채널 등록
-            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).apply {
-                this.createNotificationChannel(notificationChannel)
-            }
-        }
-    }
 }

@@ -1,5 +1,6 @@
 package com.cns.imagedownloader.view.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -12,6 +13,7 @@ import com.cns.imagedownloader.view.detail.DetailActivity
 import com.cns.imagedownloader.view.search.SearchActivity
 
 class MainActivity : AppCompatActivity() {
+    private var mContext: Context = this
     lateinit var binding: ActivityMainBinding
     private var mainViewModel: MainViewModel = MainViewModel()
     private lateinit var adapter: SampleItemAdapter

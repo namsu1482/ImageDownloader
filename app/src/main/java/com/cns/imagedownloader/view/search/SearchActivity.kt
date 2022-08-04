@@ -52,7 +52,12 @@ class SearchActivity : AppCompatActivity() {
                 imgList = it
                 notifyDataSetChanged()
                 if (imgList.isEmpty()) {
-                    binding.tvNoResult.visibility = View.VISIBLE
+                    if (searchViewModel.queryData.value.isNullOrEmpty()) {
+                        binding.tvNoResult.visibility = View.VISIBLE
+
+                    } else {
+                        binding.tvNoResult.visibility = View.GONE
+                    }
                 } else {
                     binding.tvNoResult.visibility = View.GONE
                 }
