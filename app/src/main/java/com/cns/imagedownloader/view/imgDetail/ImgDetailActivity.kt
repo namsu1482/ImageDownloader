@@ -29,6 +29,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.cns.imagedownloader.R
 import com.cns.imagedownloader.databinding.ActivityImgDetailBinding
+import com.cns.imagedownloader.filedownloadmanager.FileDownloadManager
 import com.cns.imagedownloader.model.HitsEntity
 import com.cns.imagedownloader.notification.NotificationHelper
 import com.cns.imagedownloader.view.main.MainActivity
@@ -37,7 +38,6 @@ import java.io.FileOutputStream
 
 class ImgDetailActivity : AppCompatActivity() {
     private val TAG = ImgDetailActivity::class.java.simpleName
-    var DIR_NAME: String = "ImageDownloader"
 
     var fileName: String = ""
     lateinit var binding: ActivityImgDetailBinding
@@ -101,36 +101,13 @@ class ImgDetailActivity : AppCompatActivity() {
     }
 
     fun onClick() {
-        saveImg()
+        FileDownloadManager(this).saveImage(binding.imgFull.drawable.toBitmap(), fileName)
+
         NotificationHelper(this).sendNotification()
         Toast.makeText(this, "이미지 다운로드가 완료되었습니다.", Toast.LENGTH_SHORT).show()
 
     }
 
-
-    private fun saveImg() {
-        val values = ContentValues().apply {
-            put(
-                MediaStore.Images.Media.DISPLAY_NAME,
-                "${fileName}.jpg"
-            )
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
-            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/${DIR_NAME}")
-        }
-
-        val item = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
-
-        contentResolver.openFileDescriptor(item, "w").use {
-            val imgBitmap = binding.imgFull.drawable.toBitmap()
-            FileOutputStream(it!!.fileDescriptor).use {
-                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
-                it.close()
-
-                values.put(MediaStore.Images.Media.IS_PENDING, 0)
-                contentResolver.update(item, values, null, null)
-            }
-        }
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
