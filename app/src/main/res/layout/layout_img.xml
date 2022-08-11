@@ -12,7 +12,7 @@
 
         <variable
             name="imgItem"
-            type="com.cns.imagedownloader.model.HitsEntity" />
+            type="com.cns.imagedownloader.model.ImageItemInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +30,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
 
         <ImageView
             android:id="@+id/img_search"

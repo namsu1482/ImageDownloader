@@ -2,7 +2,7 @@ package com.cns.imagedownloader.view.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.cns.imagedownloader.model.SampleItem
+import com.cns.imagedownloader.model.pixabayitem.SampleItem
 
 class MainViewModel : ViewModel() {
     private val TAG = MainViewModel::class.simpleName

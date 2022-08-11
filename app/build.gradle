@@ -20,7 +20,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField  "String", "GOOGLE_SEARCH_API",properties['google_search_api_key']
+        buildConfigField "String", "GOOGLE_SEARCH_API", properties['google_search_api_key']
+        buildConfigField "String", "PIXABAY_API_KEY", properties['pixabay_api_key']
+        buildConfigField "String", "KAKAO_REST_API_KEY", properties['kakao_rest_api_key']
 
 
     }

@@ -9,16 +9,12 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.cns.imagedownloader.R
-import com.cns.imagedownloader.databinding.ActivitySearchBinding
 import com.cns.imagedownloader.databinding.LayoutImgBinding
-import com.cns.imagedownloader.model.HitsEntity
-import com.cns.imagedownloader.model.ImgItem
-import com.cns.imagedownloader.model.SampleItem
+import com.cns.imagedownloader.model.ImageItemInfo
 
 class ImgListAdapter : RecyclerView.Adapter<ImgListAdapter.ImgItemHolder>() {
-    var imgList = ArrayList<HitsEntity>()
-    lateinit var imgClickListener: (HitsEntity) -> Unit
+    var imgList = ArrayList<ImageItemInfo>()
+    lateinit var imgClickListener: (ImageItemInfo) -> Unit
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -38,17 +34,17 @@ class ImgListAdapter : RecyclerView.Adapter<ImgListAdapter.ImgItemHolder>() {
         return imgList.size
     }
 
-    fun setItemClickListener(listener: (HitsEntity) -> Unit) {
+    fun setItemClickListener(listener: (ImageItemInfo) -> Unit) {
         this.imgClickListener = listener
     }
 
     inner class ImgItemHolder(private val binding: LayoutImgBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: HitsEntity) {
+        fun bind(item: ImageItemInfo) {
             binding.imgItem = item
             binding.progressVisibility = true
             Glide.with(binding.root.context)
-                .load(item.previewURL)
+                .load(item.smallUrl)
                 .override(300, 300)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(

@@ -1,9 +1,10 @@
-package com.cns.imagedownloader.model
+package com.cns.imagedownloader.model.pixabayitem
 
+import com.cns.imagedownloader.model.ImageItemInfo
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class ImgItem(
+data class PixabayImgItem(
     @SerializedName("total")
     val total: Int,
     @SerializedName("totalHits")
@@ -57,8 +58,24 @@ data class HitsEntity(
     val user: String,
     @SerializedName("userImageURL")
     val userImageURL: String
-):Serializable
 
+
+) : Serializable, ImageItemInfo {
+    override var imgId: String
+        get() = this.id.toString()
+        set(value) {
+
+        }
+
+    override var smallUrl: String
+        get() = this.previewURL
+        set(value) {}
+
+    override var mainUrl: String
+        get() = this.largeImageURL
+        set(value) {}
+
+}
 
 
 data class ListData<T>(var items: List<out T> = listOf(), val rowsCount: Int = 0)

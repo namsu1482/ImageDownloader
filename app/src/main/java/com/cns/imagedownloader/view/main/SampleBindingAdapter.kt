@@ -2,7 +2,7 @@ package com.cns.imagedownloader.view.main
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.cns.imagedownloader.model.SampleItem
+import com.cns.imagedownloader.model.pixabayitem.SampleItem
 
 
 object SampleBindingAdapter {

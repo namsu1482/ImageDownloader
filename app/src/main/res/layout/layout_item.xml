@@ -6,7 +6,7 @@
 
         <variable
             name="sampleitem"
-            type="com.cns.imagedownloader.model.SampleItem" />
+            type="com.cns.imagedownloader.model.pixabayitem.SampleItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

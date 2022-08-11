@@ -1,23 +1,33 @@
 package com.cns.imagedownloader.network
 
 import android.util.Log
-import com.cns.imagedownloader.model.ImgItem
-import com.cns.imagedownloader.model.ListData
+import com.cns.imagedownloader.BuildConfig
+import com.cns.imagedownloader.model.kakaoitem.KakaoImgList
+import com.cns.imagedownloader.model.pixabayitem.PixabayImgItem
+import com.cns.imagedownloader.model.pixabayitem.ListData
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 import okhttp3.ResponseBody
 import retrofit2.Response
 
 class ImgRepository(private val service: NetworkService) {
     private val TAG = ImgRepository::class.simpleName
-    suspend fun getSearchImgs(query: String): NetworkResult<ImgItem> = withContext(Dispatchers.IO) {
+    suspend fun getSearchImgs(query: String): NetworkResult<PixabayImgItem> = withContext(Dispatchers.IO) {
         callResponse {
-            service.searchImg(API_KEY, query, "photo", 1)
+            service.searchImg(BuildConfig.PIXABAY_API_KEY, query, "photo", 1)
         }
 
     }
+
+    suspend fun getKakaoImgs(query: String):NetworkResult<KakaoImgList> = withContext(Dispatchers.IO){
+        callResponse {
+            val apiKey = "KakaoAK ${BuildConfig.KAKAO_REST_API_KEY}"
+            service.searchKakaoImg(apiKey, query)
+        }
+    }
+
+
 
     private fun parseError(body: ResponseBody): NetworkResult.Error {
         val element = JsonParser().parse(body.string()).asJsonObject

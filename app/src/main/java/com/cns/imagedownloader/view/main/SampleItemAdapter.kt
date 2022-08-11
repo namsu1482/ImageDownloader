@@ -2,11 +2,9 @@ package com.cns.imagedownloader.view.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cns.imagedownloader.databinding.LayoutItemBinding
-import com.cns.imagedownloader.model.SampleItem
+import com.cns.imagedownloader.model.pixabayitem.SampleItem
 
 class SampleItemAdapter : RecyclerView.Adapter<SampleItemAdapter.ItemViewHolder>() {
     var itemList = ArrayList<SampleItem>()

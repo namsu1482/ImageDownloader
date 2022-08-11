@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.cns.imagedownloader.R
 import com.cns.imagedownloader.databinding.ActivityDetailBinding
-import com.cns.imagedownloader.model.SampleItem
+import com.cns.imagedownloader.model.pixabayitem.SampleItem
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding

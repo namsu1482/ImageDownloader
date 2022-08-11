@@ -4,15 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.cns.imagedownloader.BuildConfig
 import com.cns.imagedownloader.R
 import com.cns.imagedownloader.databinding.ActivitySearchBinding
+import com.cns.imagedownloader.model.ImageItemInfo
 import com.cns.imagedownloader.view.imgDetail.ImgDetailActivity
 
 class SearchActivity : AppCompatActivity() {
@@ -49,7 +47,8 @@ class SearchActivity : AppCompatActivity() {
 
         searchViewModel.imgList.observe(this, Observer {
             imgListAdapter.apply {
-                imgList = it
+                imgList = it as ArrayList<ImageItemInfo>
+
                 notifyDataSetChanged()
                 if (imgList.isEmpty()) {
                     if (searchViewModel.queryData.value.isNullOrEmpty()) {

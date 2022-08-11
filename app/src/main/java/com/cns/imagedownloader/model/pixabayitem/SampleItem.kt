@@ -1,4 +1,4 @@
-package com.cns.imagedownloader.model
+package com.cns.imagedownloader.model.pixabayitem
 
 import java.io.Serializable
 
